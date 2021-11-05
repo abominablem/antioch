@@ -101,7 +101,7 @@ class Transactions:
     def __init__(self, text):
         self.text = text
         self.date_start = parse_date(get_xml_block(text, "DTSTART"))
-        self.date_end = parse_date(get_xml_block(text, "20211104000000"))
+        self.date_end = parse_date(get_xml_block(text, "DTEND"))
         self.transactions = [
             Transaction(trns) for trns in get_xml_block(text, "STMTTRN")
             ]
