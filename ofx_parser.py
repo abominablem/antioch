@@ -29,13 +29,9 @@ def parse_date(date, date_only = True):
         return dtime
 
 class OFX:
-    def __init__(self, text = None, filename = None):
-        self.text = text
+    def __init__(self, filename):
         self.filename = filename
-        self._check_inputs()
-
-        if not filename is None:
-            self.text = self.read_file(filename)
+        self.text = self.read_file(filename)
 
         # Parse headers
         headers = ["OFXHEADER", "DATA", "VERSION", "SECURITY", "ENCODING",
@@ -54,11 +50,6 @@ class OFX:
 
         self.bank_messages = BankMessages(
             get_xml_block(self.text, "BANKMSGSRSV1"))
-
-    def _check_inputs(self):
-        if self.text is None and self.filename is None:
-            raise AttributeError("Either the text to parse must be provided "
-                                 "or a valid filename.")
 
     def read_file(self, filename):
         with open(filename) as f:
