@@ -66,10 +66,12 @@ class Status:
 class SignOnMessages:
     def __init__(self, text):
         self.text = text
-        if text is None: return None
-        self.status = Status(get_xml_block(text, "STATUS"))
-        #TODO
-        return
+        if text is None: return
+        self.sonrs = get_xml_block(text, "SONRS")
+        self.status = Status(get_xml_block(self.sonrs, "STATUS"))
+        self.server_date = parse_date(get_xml_block(self.sonrs, "DTSERVER"))
+        self.language = get_xml_block(self.sonrs, "LANGUAGE")
+        self.intu_bid = parse_date(get_xml_block(self.sonrs, "INTU.BID"))
 
 class BankMessages:
     def __init__(self, text):
