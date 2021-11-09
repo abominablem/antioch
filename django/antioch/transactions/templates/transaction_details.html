@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Transaction details {% if parent %}- {{ parent.fit_id }} {% endif %}</h1>
+  {% if transaction_details %}
+  <ul>
+    {% for transaction_detail in transaction_details %}
+      <li>
+        <a href="{{ transaction_detail.get_absolute_url }}">{{ transaction_detail.transaction_group }}</a> ({{transaction_detail.amount}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There is no transaction with this ID.</p>
+  {% endif %}
+{% endblock %}

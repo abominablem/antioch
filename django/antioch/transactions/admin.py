@@ -16,8 +16,8 @@ class TransactionDetailInline(admin.TabularInline):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('fit_id', 'account_id', 'date_posted', 'counter_party',
-                    'reference', 'amount')
+                    'reference')
 
-    list_filter = ('account_id', 'date_posted', 'amount')
+    list_filter = ('account_id', 'date_posted')
 
     inlines = [TransactionDetailInline]

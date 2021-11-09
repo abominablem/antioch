@@ -86,20 +86,21 @@ class Transaction(models.Model):
     payment_type = models.ForeignKey('PaymentType',
                                      on_delete = models.PROTECT)
 
-    amount = models.FloatField(verbose_name = "Amount",
-                               blank = False)
-
     class Meta:
         ordering = ['date_posted', 'fit_id']
 
-    def get_absolute_url(self):
-        """Returns the url to view all detail in a specific transaction"""
-        #TODO
-        return
+    # def get_absolute_url(self):
+    #     """Returns the url to view all detail in a specific transaction"""
+    #     return reverse('transaction-detail', kwargs={'fit_id': self.fit_id})
 
     def __str__(self):
         return "%s %s %s %s" % (self.fit_id, self.date_posted,
                                 self.amount, self.counter_party)
+
+    def get_amount(self):
+        details = TransactionDetail.objects.filter(fit_id = self.fit_id)
+        amounts = details.values_list('amount')
+        return sum([amount_tuple[0] for amount_tuple in amounts])
 
 class TransactionDetail(models.Model):
     fit_id = models.ForeignKey('Transaction', on_delete = models.PROTECT)
@@ -129,5 +130,8 @@ class TransactionDetail(models.Model):
         """
         Returns the url to view a specific detail of a certain transaction
         """
-        #TODO
-        return
+        return reverse('transaction-detail', kwargs={'fit_id': self.detail_id})
+
+    def get_parent(self):
+        parent_id = self.detail_id.split("-")[0]
+        return Transaction.objects.filter(pk = parent_id).first()

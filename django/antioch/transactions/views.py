@@ -1,22 +1,31 @@
 from django.shortcuts import render
+from django.views import generic
 from .models import (PaymentType, TransactionGroup, Account, Transaction,
                      TransactionDetail)
 
 # Create your views here.
 
-def index(request):
-    num_transactions = Transaction.objects.all().count()
-    num_details = TransactionDetail.objects.all().count()
+def transactions(request):
+    transactions = Transaction.objects.filter()
 
-    num_accounts = Account.objects.count()
-    num_savings = Transaction.objects.filter(account_id__exact = '2').count()
+    context = {'transactions': transactions}
+
+    return render(request, 'transactions.html', context = context)
+
+
+def transaction_details(request, fit_id):
+    fit_id = fit_id.split("-")[0]
+    details = TransactionDetail.objects.filter(
+        detail_id__contains = fit_id)
+
+    try:
+        parent = details.first().get_parent()
+    except AttributeError:
+        parent = None
 
     context = {
-        'num_accounts': num_accounts,
-        'num_details': num_details,
-        'num_transactions': num_transactions,
-        'num_savings': num_savings,
-    }
+        'transaction_details': details,
+        'parent': parent
+        }
 
-    # Render the HTML template index.html with the data in the context variable
-    return render(request, 'index.html', context=context)
+    return render(request, 'transaction_details.html', context = context)

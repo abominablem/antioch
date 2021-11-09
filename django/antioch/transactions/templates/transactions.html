@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Transactions</h1>
+  {% if transactions %}
+  <ul>
+    {% for transaction in transactions %}
+      <li>
+        <a href="{{ transaction.fit_id }}">{{ transaction.fit_id }} </a> {{transaction.date_posted}} {{transaction.counter_party}} {{transaction.reference}} ({{transaction.get_amount}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no transactions.</p>
+  {% endif %}
+{% endblock %}
