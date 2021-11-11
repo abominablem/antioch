@@ -1,5 +1,51 @@
+body{
+	background: #F8F8F8;
+}
+header{
+	background: #71ce9b; 
+	width: 100%; 
+	overflow: auto; 
+}
+.logo img{
+	position: absolute;
+	z-index: 3;
+	display: inline-block;
+}
+.logo-white-box {
+	position: absolute;
+	background: white;
+	height: 150px;
+	width: 75px;
+	z-index: 1;
+}
+.logo-blue-green-box {
+	position: absolute;
+	height: 150px;
+	width: 75px;
+	z-index: 2;
+	float: left;
+	margin-left: 75px;
+}
+.antioch-title {
+	position: relative;
+	background: #71ce9b;
+	height: 150px;
+	padding-left: 175px;
+	padding-bottom: 10px;
+	font-family: "Palatino Linotype";
+	font-size: 75px; 
+	font-weight: bold; 
+	font-variant: small-caps;
+	display: table-cell; 
+	vertical-align: middle;
+}
+.col-sm-2 {
+	width: 150px;
+	background: #40FFFF;
+}
 .sidebar-nav {
-    margin-top: 20px;
+	margin-left: 3px;
     padding: 0;
+	padding-top: 10px;
     list-style: none;
 }
