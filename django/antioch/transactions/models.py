@@ -4,9 +4,6 @@ from django.urls import reverse
 # Create your models here.
 
 class PaymentType(models.Model):
-    """
-    [")))", "ATM", "BP", "CR", "DD", "SO", "TFR", "VIS", "DR"]
-    """
     name = models.CharField(max_length = 15,
                             verbose_name = "Payment type",
                             primary_key = True)
@@ -15,13 +12,6 @@ class PaymentType(models.Model):
         return self.name
 
 class TransactionGroup(models.Model):
-    """
-    ["Expense (Food)", "Expense (Entertainment)",
-     "Expense (Travel)", "Expense (Clothes)",
-     "Expense (Books)", "Expense (Rent/Bills)",
-     "Expense (Other)", "Savings", "Cash", "Income (Work)",
-     "Income (Other)", "Interest"]
-    """
     name = models.CharField(max_length = 255,
                             verbose_name = "Transaction group",
                             primary_key = True)
