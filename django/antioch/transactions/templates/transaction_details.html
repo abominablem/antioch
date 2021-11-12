@@ -4,11 +4,16 @@
   <h1>Transaction details {% if parent %}- {{ parent.fit_id }} {% endif %}</h1>
   {% if transaction_details %}
   <ul>
-    {% for transaction_detail in transaction_details %}
-      <li>
-        <a href="{{ transaction_detail.get_absolute_url }}">{{ transaction_detail.transaction_group }}</a> ({{transaction_detail.amount}})
-      </li>
-    {% endfor %}
+	<div class='detail-group'>
+		{% for detail in transaction_details %}
+		<div class='single-detail'>
+			<div class="detail-id"> <a href="{{ detail.detail_id }}">{{ detail.get_detail_id }}</a></div>
+			<div class="detail-element"">{{detail.comment}}</div>
+			<div class="detail-element">{{detail.get_amount_formatted}}</div>
+			<div class="detail-element">{{detail.transaction_group}}</div>
+		</div>
+		{% endfor %}
+	</div>
   </ul>
   {% else %}
     <p>There is no transaction with this ID.</p>
