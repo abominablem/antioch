@@ -3,6 +3,22 @@ from django.urls import reverse
 
 # Create your models here.
 
+def format_number(value, format, dp = 2):
+    if format == "currency":
+        return "£%s" % round(value, dp)
+    elif format == "accounting":
+        if value < 0:
+            return "(£%s)" % round(value, dp)
+        else:
+            return "£%s" % round(value, dp)
+    elif format == "percentage":
+        return "%s%%" % round(value*100, dp)
+    elif format == "numeric":
+        return str(round(value, dp))
+    else:
+        raise ValueError("Unknown format provided. Format must be one of"
+                         " currency, accounting, percentage, or numeric.")
+
 class PaymentType(models.Model):
     name = models.CharField(max_length = 15,
                             verbose_name = "Payment type",
@@ -81,16 +97,19 @@ class Transaction(models.Model):
 
     # def get_absolute_url(self):
     #     """Returns the url to view all detail in a specific transaction"""
-    #     return reverse('transaction-detail', kwargs={'fit_id': self.fit_id})
+    #     return self.fit_id
 
     def __str__(self):
         return "%s %s %s %s" % (self.fit_id, self.date_posted,
-                                self.amount, self.counter_party)
+                                self.get_amount(), self.counter_party)
 
     def get_amount(self):
         details = TransactionDetail.objects.filter(fit_id = self.fit_id)
         amounts = details.values_list('amount')
         return sum([amount_tuple[0] for amount_tuple in amounts])
+
+    def get_amount_formatted(self):
+        return format_number(self.get_amount(), "currency")
 
 class TransactionDetail(models.Model):
     fit_id = models.ForeignKey('Transaction', on_delete = models.PROTECT)
@@ -116,6 +135,12 @@ class TransactionDetail(models.Model):
     def __str__(self):
         return "%s %s" % (self.detail_id, self.amount)
 
+    def get_detail_id(self):
+        """
+        Return the detail id without the preceding FIT id
+        """
+        return self.detail_id[-2:]
+
     def get_absolute_url(self):
         """
         Returns the url to view a specific detail of a certain transaction
@@ -125,3 +150,6 @@ class TransactionDetail(models.Model):
     def get_parent(self):
         parent_id = self.detail_id.split("-")[0]
         return Transaction.objects.filter(pk = parent_id).first()
+
+    def get_amount_formatted(self):
+        return format_number(self.amount, "currency")
