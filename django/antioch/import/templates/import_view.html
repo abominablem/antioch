@@ -1,5 +1,11 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <p> Import button and UI goes here </p>
+    <h> Import OFX </p>
+    <form action="/import/import_ofx/" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <label for="file">Filename:</label>
+    <input type="file" name="file" id="file" />
+    <br />
+    <input type="submit" name="submit" value="Submit" />
+    </form>
 {% endblock %}
