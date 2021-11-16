@@ -33,6 +33,8 @@ class OFX:
         # if filename is None, create a blank OFX object which can be
         # populated with import_raw later
         if filename is None:
+            self.filename = None
+            self.text = None
             return
 
         self.filename = filename
@@ -40,14 +42,21 @@ class OFX:
         self._parse()
 
     def import_raw(self, text):
-        self.text = text
+        self.text = str(text)
+        self._parse()
+        return self
 
     def import_file(self, filename):
         with open(filename) as f:
             text = f.read()
         self.text = text
+        self._parse()
+        return self
 
     def _parse(self):
+        if self.text is None:
+            raise AttributeError
+
         # Parse headers
         headers = ["OFXHEADER", "DATA", "VERSION", "SECURITY", "ENCODING",
                    "CHARSET", "COMPRESSION", "OLDFILEUID", "NEWFILEUID"]
@@ -66,6 +75,8 @@ class OFX:
         self.bank_messages = BankMessages(
             get_xml_block(self.text, "BANKMSGSRSV1"))
 
+        self.transactions = self.bank_messages.transactions
+
 class Status:
     def __init__(self, text):
         self.text = text
@@ -81,7 +92,7 @@ class SignOnMessages:
         self.status = Status(get_xml_block(self.sonrs, "STATUS"))
         self.server_date = parse_date(get_xml_block(self.sonrs, "DTSERVER"))
         self.language = get_xml_block(self.sonrs, "LANGUAGE")
-        self.intu_bid = parse_date(get_xml_block(self.sonrs, "INTU.BID"))
+        self.intu_bid = get_xml_block(self.sonrs, "INTU.BID")
 
 class BankMessages:
     def __init__(self, text):
@@ -139,5 +150,5 @@ class Transaction:
         self.reference = get_xml_block(text, "MEMO")
 
 if __name__ == "__main__":
-    filename = r"D:\Users\Marcus\Downloads\TransactionHistory.ofx"
+    filename = r"D:\Users\Marcus\Downloads\TransactionHistory (1).ofx"
     ofx = OFX(filename = filename)
