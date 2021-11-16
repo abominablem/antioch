@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h> Import OFX </p>
+    <h> Import OFX </h>
     <form action="/import/import_ofx/" method="post" enctype="multipart/form-data">{% csrf_token %}
     <label for="file">Filename:</label>
     <input type="file" name="file" id="file" />

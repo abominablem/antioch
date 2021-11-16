@@ -26,3 +26,9 @@ django/antioch/transactions.sqlite3
 django/antioch/transactions.sqlite3
 django/antioch/transactions.sqlite3
 *.sqlite3
+django/antioch/launch_server.bat
+*.pyc
+*.sqlite3
+*.sqlite3
+django/antioch/transactions/templates/archive/index.html
+*.sqlite3

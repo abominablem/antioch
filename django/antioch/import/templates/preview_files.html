@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h> Preview imported files </p>
+	{% for filename, ofx in ofx_objects.items %}
+    	{% for transaction in ofx.transactions %}
+            <p> {{ transaction.fit_id }} </p>
+		{% endfor %}
+	{% endfor %}
+
+{% endblock %}
