@@ -149,6 +149,13 @@ class Transaction:
         self.counter_party = get_xml_block(text, "NAME")
         self.reference = get_xml_block(text, "MEMO")
 
+    def get_amount_formatted(self, cur_symbol = "£"):
+        amount = round(float(self.amount), 2)
+        if amount < 0:
+            return "-%s%s" % (cur_symbol, format(abs(amount), '.2f'))
+        else:
+            return "%s%s" % (cur_symbol, format(amount, '.2f'))
+
 if __name__ == "__main__":
     filename = r"D:\Users\Marcus\Downloads\TransactionHistory (1).ofx"
     ofx = OFX(filename = filename)
