@@ -1,11 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h> Preview imported files </p>
+    <h1> Preview imported transactions </h1>
 	{% for filename, ofx in ofx_objects.items %}
     	{% for transaction in ofx.transactions %}
-            <p> {{ transaction.fit_id }} </p>
+            <div class="single-tpreview">
+                <div class="tpreview-date">{{ transaction.date_posted }}</div>
+                <div class="tpreview-cparty">{{ transaction.counter_party }}</div>
+                <div class="tpreview-ref">{{ transaction.reference }}</div>
+                <div class="tpreview-amount">{{ transaction.get_amount_formatted }}</div>
+            </div>
 		{% endfor %}
 	{% endfor %}
-
 {% endblock %}
